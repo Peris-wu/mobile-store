@@ -7,6 +7,9 @@
 
 export default {
   name: 'HomeView',
-  components: {}
+  components: {},
+  mounted() {
+    console.log(123)
+  }
 }
 </script>
