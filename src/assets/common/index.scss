@@ -1,7 +1,14 @@
 @import 'normalize.css';
 @import '@/assets/font/iconfont.css';
+@import '@/assets/common/custom.scss';
 ul,li{
   margin: 0;
   padding: 0;
   list-style: none;
+}
+img{
+  vertical-align: middle
+}
+h1{
+  margin: 0;
 }
