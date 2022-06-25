@@ -175,25 +175,30 @@
     </div>
     <!-- 茶文化 e -->
     <!-- 猜你喜欢 s -->
-    <div>
-      <div class="l-header">
+    <div class="guess-y-like">
+      <div class="g-header">
         <sub-header>
           <template #title>
             <span>猜你喜欢</span>
           </template>
         </sub-header>
       </div>
+      <div class="g-content">
+        <ul>
+          <li v-for="gItem in guessYLikeList" :key="gItem.id">
+            <div class="bg-color">
+              <img v-lazy="gItem.imgUrl" />
+            </div>
+            <h1 class="f15 pt8 pb8">{{ gItem.teaName }}</h1>
+            <div class="color-red">
+              <span class="f12">￥</span>
+              <b class="f18">{{ gItem.price }}</b>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
     <!-- 猜你喜欢 e -->
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
-    <p>1</p>
     <tab-bar></tab-bar>
   </div>
 </template>
@@ -215,6 +220,16 @@ import officVertify from '@/assets/images/offic-vertify.png'
 import tgy from '@/assets/images/tgy.jpeg'
 import zsxz from '@/assets/images/zsxz.jpeg'
 import htlk from '@/assets/images/htlk.jpeg'
+import bc from '@/assets/images/bc.png'
+import jjm from '@/assets/images/jjm.jpeg'
+import ljfh from '@/assets/images/ljfh.jpeg'
+import gsch from '@/assets/images/gsch.jpeg'
+import tgy02 from '@/assets/images/tgy.png'
+import dhp02 from '@/assets/images/dhp02.jpeg'
+import sxlx from '@/assets/images/sxlx.jpeg'
+import hsmf from '@/assets/images/hsmf.png'
+import blc from '@/assets/images/blc.png'
+import lgm from '@/assets/images/lgm.jpeg'
 export default {
   name: 'HomeView',
   data() {
@@ -287,6 +302,68 @@ export default {
           from: '茶友必备',
           imgUrl: htlk
         }
+      ],
+      guessYLikeList: [
+        {
+          id: 1,
+          teaName: '雨前珍惜白茶1号',
+          price: '68',
+          imgUrl: bc
+        },
+        {
+          id: 2,
+          teaName: '武夷山灰芽花香金骏眉3号',
+          price: '128',
+          imgUrl: jjm
+        },
+        {
+          id: 3,
+          teaName: '2022春茶明前龙井飞花',
+          price: '128',
+          imgUrl: ljfh
+        },
+        {
+          id: 4,
+          teaName: '云南凤庆高海拔古树滇红',
+          price: '99',
+          imgUrl: gsch
+        },
+        {
+          id: 5,
+          teaName: '消青工艺浓香铁观音1号',
+          price: '128',
+          imgUrl: tgy02
+        },
+        {
+          id: 6,
+          teaName: '武夷山高级大红袍2号',
+          price: '99',
+          imgUrl: dhp02
+        },
+        {
+          id: 7,
+          teaName: '漳平水仙兰香1号',
+          price: '99',
+          imgUrl: sxlx
+        },
+        {
+          id: 8,
+          teaName: '安徽雨前黄山毛峰2号',
+          price: '68',
+          imgUrl: hsmf
+        },
+        {
+          id: 9,
+          teaName: '浙江花果香碧螺春2号',
+          price: '88',
+          imgUrl: blc
+        },
+        {
+          id: 10,
+          teaName: '2017福鼎高山枣香老贡眉',
+          price: '118',
+          imgUrl: lgm
+        }
       ]
     }
   },
@@ -295,6 +372,13 @@ export default {
   methods: {
     change(index) {
       this.current = index
+    },
+    initScrollTop() {
+      window.scrollTo({
+        // 页面切换时，滚动条平滑切换至顶部
+        top: 0,
+        behavior: 'smooth'
+      })
     }
   },
   mounted() {
@@ -307,6 +391,7 @@ export default {
 <style lang="scss" scoped>
 .home-wrap {
   background-color: #f5f5f5;
+  padding-bottom: 48px;
   .header-wrap {
     position: fixed;
     width: 100%;
@@ -527,6 +612,30 @@ export default {
         img {
           width: 100%;
           border-radius: 10px;
+        }
+      }
+    }
+  }
+  .guess-y-like {
+    background-color: #fff;
+    .g-header {
+      padding: 7.5px 0;
+    }
+    .g-content {
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 3.75px;
+        li {
+          box-sizing: border-box;
+          width: 50%;
+          padding: 3.75px;
+          .bg-color {
+            background-color: #f3f3f3;
+          }
+          img {
+            width: 100%;
+          }
         }
       }
     }
