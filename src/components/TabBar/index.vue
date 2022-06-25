@@ -60,6 +60,7 @@ export default {
   position: fixed;
   width: 100%;
   bottom: 0;
+  background-color: #fff;
   z-index: 999;
   ul {
     display: flex;
