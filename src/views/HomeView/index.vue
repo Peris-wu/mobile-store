@@ -199,6 +199,29 @@
       </div>
     </div>
     <!-- 猜你喜欢 e -->
+    <!-- footer s -->
+    <div class="h-footer">
+      <div class="f-description txt-center f15">
+        <span>到底啦，您还可以看看这里</span>
+      </div>
+      <div class="f-btn">
+        <span class="f15">
+          <van-button round>更多茶叶</van-button>
+        </span>
+        <span>
+          <van-button round>更多茶具</van-button>
+        </span>
+      </div>
+      <div class="f-right f15">
+        <span>Copyright 2016, 茶七网 TEA7.COM</span>
+        <span>服务时间：08:30-21:00 客服热线: 400-9993-513</span>
+        <div>
+          <span>备案号：</span>
+          <span class="color-222">闽ICP备14011677号-2</span>
+        </div>
+      </div>
+    </div>
+    <!-- footer e -->
     <tab-bar></tab-bar>
   </div>
 </template>
@@ -391,7 +414,7 @@ export default {
 <style lang="scss" scoped>
 .home-wrap {
   background-color: #f5f5f5;
-  padding-bottom: 48px;
+  padding-bottom: 60px;
   .header-wrap {
     position: fixed;
     width: 100%;
@@ -638,6 +661,26 @@ export default {
           }
         }
       }
+    }
+  }
+  .h-footer {
+    padding-top: 18px;
+    .f-description {
+      color: #999;
+    }
+    .f-btn {
+      display: flex;
+      justify-content: center;
+      span {
+        margin: 15px 20px;
+      }
+    }
+    .f-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #999;
+      margin-top: 20px;
     }
   }
 }
