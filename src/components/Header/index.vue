@@ -17,7 +17,7 @@
       <i class="iconfont icon-24gl-headset icon-color"></i>
     </header>
     <div>
-      <van-tabs @click="fn">
+      <van-tabs @click="navigateTo">
         <van-tab
           v-for="item in headerTabs"
           :title="item.title"
@@ -87,7 +87,7 @@ export default {
     toSearchPage() {
       console.log(123)
     },
-    fn(e) {
+    navigateTo(e) {
       console.log(e)
     }
   }

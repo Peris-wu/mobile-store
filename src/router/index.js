@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '@/views/HomeView'
+import ShowView from '@/views/ShowView'
 
 Vue.use(VueRouter)
 
@@ -10,22 +11,33 @@ const My = () => import('@/views/My')
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    component: ShowView,
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: HomeView
+      },
+      {
+        path: '/jjm',
+        name: 'Jjm',
+        component: () => import('@/views/Jjm')
+      }
+    ]
   },
   {
     path: '/category',
-    name: 'category',
+    name: 'Category',
     component: Category
   },
   {
     path: '/cart',
-    name: 'cart',
+    name: 'Cart',
     component: Cart
   },
   {
     path: '/my',
-    name: 'my',
+    name: 'My',
     component: My
   }
 ]

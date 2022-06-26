@@ -8,7 +8,7 @@
         :key="index"
         :style="{ color: iconItem.path === $route.path ? 'red' : '' }"
       >
-        <i :class="['iconfont', ...iconItem.className]"></i>
+        <i :class="['iconfont', ...iconItem.className]" class="f24"></i>
         <span>{{ iconItem.text }}</span>
       </li>
     </ul>

@@ -85,7 +85,7 @@
             <li>
               <img src="~@/assets/images/special02.jpeg" alt="" />
             </li>
-            <li style="width: 300px; padding: 0 10px">
+            <li>
               <img src="~@/assets/images/special03.jpeg" alt="" />
             </li>
           </template>
