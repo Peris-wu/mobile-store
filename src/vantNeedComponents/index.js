@@ -1,4 +1,15 @@
-import { Button, Search, Tab, Tabs, Swipe, SwipeItem, Lazyload } from 'vant'
+import {
+  Button,
+  Search,
+  Tab,
+  Tabs,
+  Swipe,
+  SwipeItem,
+  Lazyload,
+  NavBar,
+  Sticky
+} from 'vant'
+
 export default {
   Button,
   Search,
@@ -6,5 +17,7 @@ export default {
   Tabs,
   Swipe,
   SwipeItem,
-  Lazyload
+  Lazyload,
+  NavBar,
+  Sticky
 }
