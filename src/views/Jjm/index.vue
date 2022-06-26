@@ -19,7 +19,12 @@
       </div>
       <div class="n-bottom">
         <van-sticky>
-          <van-tabs>
+          <van-tabs
+            @click="triggerPage"
+            v-model="currentTab"
+            color="#b0352f"
+            title-active-color="#b0352f"
+          >
             <van-tab
               v-for="tabItem in tabList"
               :title="tabItem.teaName"
@@ -29,7 +34,9 @@
         </van-sticky>
       </div>
     </div>
-    <section></section>
+    <section>
+      <router-view></router-view>
+    </section>
     <div>
       <tab-bar></tab-bar>
     </div>
@@ -46,52 +53,52 @@ export default {
         {
           id: 1,
           teaName: '金骏眉',
-          path: ''
+          path: '/jjm'
         },
         {
           id: 2,
           teaName: '大红袍',
-          path: ''
+          path: '/jjm/dhp'
         },
         {
           id: 3,
           teaName: '铁观音',
-          path: ''
+          path: '/jjm/tgy'
         },
         {
           id: 4,
           teaName: '漳平水仙',
-          path: ''
+          path: '/jjm/zpsx'
         },
         {
           id: 5,
           teaName: '龙井',
-          path: ''
+          path: '/jjm/lj'
         },
         {
           id: 6,
           teaName: '白茶',
-          path: ''
+          path: '/jjm/bc'
         },
         {
           id: 7,
           teaName: '普洱',
-          path: ''
+          path: '/jjm/pe'
         },
         {
           id: 8,
           teaName: '毛峰',
-          path: ''
+          path: '/jjm/mf'
         },
         {
           id: 9,
           teaName: '茉莉花茶',
-          path: ''
+          path: '/jjm/mlhc'
         },
         {
           id: 10,
           teaName: '正山小种',
-          path: ''
+          path: '/jjm/zsxz'
         }
       ]
     }
@@ -101,9 +108,23 @@ export default {
     TabBar
   },
   methods: {
-    back() {
-      console.log(123)
+    back() {},
+    triggerPage(index) {
+      this.$router.push({
+        path: this.tabList[index].path
+      })
     }
+  },
+  computed: {
+    currentTab() {
+      let index = this.tabList.findIndex((item) => {
+        return item.path === this.$route.path
+      })
+      return index
+    }
+  },
+  mounted() {
+    console.log(this.$route)
   }
 }
 </script>
@@ -125,6 +146,11 @@ export default {
       }
       .van-nav-bar-icon-color {
         color: #fff !important;
+      }
+    }
+    .n-bottom {
+      ::v-deep .van-tab {
+        font-size: 16px;
       }
     }
   }
