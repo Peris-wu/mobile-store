@@ -20,8 +20,59 @@ const routes = [
       },
       {
         path: '/jjm',
-        name: 'Jjm',
-        component: () => import('@/views/Jjm')
+        component: () => import('@/views/Jjm'),
+        children: [
+          {
+            path: '',
+            name: 'Jjm',
+            component: () => import('@/views/Jjm/JjmContent')
+          },
+          {
+            path: 'dhp',
+            name: 'Dhp',
+            component: () => import('@/views/Jjm/DhpContent')
+          },
+          {
+            path: 'tgy',
+            name: 'Tgy',
+            component: () => import('@/views/Jjm/TgyContent')
+          },
+          {
+            path: 'zpsx',
+            name: 'Zpsx',
+            component: () => import('@/views/Jjm/ZpsxContent')
+          },
+          {
+            path: 'lj',
+            name: 'Lj',
+            component: () => import('@/views/Jjm/LjContent')
+          },
+          {
+            path: 'bc',
+            name: 'Bc',
+            component: () => import('@/views/Jjm/BcContent')
+          },
+          {
+            path: 'pe',
+            name: 'Pe',
+            component: () => import('@/views/Jjm/PeContent')
+          },
+          {
+            path: 'mf',
+            name: 'Mf',
+            component: () => import('@/views/Jjm/MfContent')
+          },
+          {
+            path: 'mlhc',
+            name: 'Mlhc',
+            component: () => import('@/views/Jjm/MlhcContent')
+          },
+          {
+            path: 'zsxz',
+            name: 'Zsxz',
+            component: () => import('@/views/Jjm/ZsxzContent')
+          }
+        ]
       }
     ]
   },

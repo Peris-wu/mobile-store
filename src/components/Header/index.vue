@@ -37,47 +37,47 @@ export default {
         {
           id: 1,
           title: '推荐',
-          path: ''
+          path: '/'
         },
         {
           id: 2,
           title: '金骏眉',
-          path: ''
+          path: '/jjm'
         },
         {
           id: 3,
           title: '大红袍',
-          path: ''
+          path: '/jjm/dhp'
         },
         {
           id: 4,
           title: '铁观音',
-          path: ''
+          path: '/jjm/tgy'
         },
         {
           id: 5,
           title: '绿茶',
-          path: ''
+          path: '/jjm/lc'
         },
         {
           id: 6,
           title: '紫砂壶',
-          path: ''
+          path: '/jjm/zsh'
         },
         {
           id: 7,
           title: '漳平水仙',
-          path: ''
+          path: '/jjm/zpsx'
         },
         {
           id: 8,
           title: '普洱',
-          path: ''
+          path: '/jjm/pe'
         },
         {
           id: 9,
           title: '正山小种',
-          path: ''
+          path: '/jjm/zsxz'
         }
       ]
     }
@@ -87,8 +87,10 @@ export default {
     toSearchPage() {
       console.log(123)
     },
-    navigateTo(e) {
-      console.log(e)
+    navigateTo(index) {
+      this.$router.push({
+        path: this.headerTabs[index].path
+      })
     }
   }
 }
