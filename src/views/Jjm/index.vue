@@ -100,7 +100,8 @@ export default {
           teaName: '正山小种',
           path: '/jjm/zsxz'
         }
-      ]
+      ],
+      currentTab: 0
     }
   },
 
@@ -110,21 +111,16 @@ export default {
   methods: {
     back() {},
     triggerPage(index) {
+      if (this.tabList[index].path === this.$route.path) return
       this.$router.push({
         path: this.tabList[index].path
       })
     }
   },
-  computed: {
-    currentTab() {
-      let index = this.tabList.findIndex((item) => {
-        return item.path === this.$route.path
-      })
-      return index
-    }
-  },
   mounted() {
-    console.log(this.$route)
+    this.currentTab = this.tabList.findIndex(
+      (item) => item.path === this.$route.path
+    )
   }
 }
 </script>
