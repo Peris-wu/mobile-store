@@ -1,45 +1,66 @@
 <!--  -->
 <template>
-  <div class="category-header">
-    <div class="ch-header">
-      <category-header
-        placeholder="搜您喜欢的..."
-        @handleClick="handleNavigate"
-      ></category-header>
-    </div>
-    <div class="ch-content">
-      <van-sticky>
-        <div class="cc-nav">
-          <ul>
-            <li class="f15" v-for="item in navList" :key="item.id">
-              {{ item.navText }}
-            </li>
-          </ul>
+  <div>
+    <div class="category-header" ref="BScrollRef">
+      <div class="ch-content">
+        <div class="cc-header">
+          <category-header
+            placeholder="搜您喜欢的..."
+            @handleClick="handleNavigate"
+          ></category-header>
         </div>
-      </van-sticky>
-
-      <div class="cc-content">
-        <ul>
-          <li v-for="categoryItem in categoryList" :key="categoryItem.id">
-            <div v-if="categoryItem.imgUrl">
-              <img :src="categoryItem.imgUrl" />
-            </div>
-            <div class="mt20 mb10">
-              <sub-title>
-                <div>{{ categoryItem.title }}</div>
-              </sub-title>
-            </div>
-            <ul>
-              <li v-for="sItem in categoryItem.item" :key="sItem.id">
-                <div style="padding: 6px">
-                  <img :src="sItem.imgUrl" />
-                </div>
-                <span>{{ sItem.name }}</span>
+        <div class="cc-content">
+          <div class="cc-nav">
+            <ul v-show="!isShow">
+              <li
+                class="f15"
+                :class="{ active: currentPos === index }"
+                v-for="(item, index) in navList"
+                :key="item.id"
+                @click="clickNav(index)"
+              >
+                {{ item.navText }}
               </li>
             </ul>
-          </li>
-        </ul>
+          </div>
+          <div class="cc-c-content">
+            <ul>
+              <li v-for="categoryItem in categoryList" :key="categoryItem.id">
+                <div v-if="categoryItem.imgUrl">
+                  <img :src="categoryItem.imgUrl" />
+                </div>
+                <div class="pt20 pb10">
+                  <sub-title>
+                    <div>{{ categoryItem.title }}</div>
+                  </sub-title>
+                </div>
+                <ul>
+                  <li v-for="sItem in categoryItem.item" :key="sItem.id">
+                    <div style="padding: 6px">
+                      <img :src="sItem.imgUrl" />
+                    </div>
+                    <span>{{ sItem.name }}</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div style="height: 210px"></div>
       </div>
+    </div>
+    <div class="cc-nav-copy" v-show="isShow">
+      <ul>
+        <li
+          class="f15"
+          :class="{ active: currentPos === index }"
+          v-for="(item, index) in navList"
+          :key="item.id"
+          @click="clickNav(index)"
+        >
+          {{ item.navText }}
+        </li>
+      </ul>
     </div>
     <tab-bar></tab-bar>
   </div>
@@ -49,6 +70,7 @@
 import CategoryHeader from '@/components/CategoryHeader'
 import SubTitle from '@/views/Category/SubTitle'
 import TabBar from '@/components/TabBar'
+import BScroll from '@better-scroll/core'
 import zshTm from '@/assets/images/zsh-tm.jpeg'
 import zsh from '@/assets/images/s-zsh.jpeg'
 import tgy from '@/assets/images/s-tgy.jpeg'
@@ -62,6 +84,10 @@ export default {
   name: 'CategoryView',
   data() {
     return {
+      isShow: false,
+      recordHeight: [],
+      bScroll: null,
+      bScrollYPos: 0,
       navList: [
         {
           id: 1,
@@ -629,38 +655,90 @@ export default {
       ]
     }
   },
-  components: { TabBar, CategoryHeader, SubTitle },
+  components: {
+    TabBar,
+    CategoryHeader,
+    SubTitle
+  },
+  computed: {
+    currentPos() {
+      let index = this.recordHeight.findIndex((currentItem, currentIndex) => {
+        return (
+          Math.abs(this.bScrollYPos) >= currentItem &&
+          Math.abs(this.bScrollYPos) < this.recordHeight[currentIndex + 1]
+        )
+      })
+      return index
+    }
+  },
   methods: {
     handleNavigate() {
       this.$router.push('/search')
+    },
+    clickNav(index) {
+      this.bScroll.scrollTo(0, -this.recordHeight[index] - 44, 300)
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      let domList = document.querySelectorAll('.cc-c-content>ul>li')
+      let result = 0
+      this.recordHeight.push(result)
+      Array.from(domList).forEach((item) => {
+        result += item.clientHeight
+        this.recordHeight.push(result)
+      })
+      console.log(this.recordHeight)
+      this.bScroll = new BScroll(this.$refs.BScrollRef, {
+        scrollY: true,
+        probeType: 3,
+        bounce: false,
+        click: true
+      })
+      this.bScroll.on('scroll', ({ y }) => {
+        this.bScrollYPos = y
+        if (Math.abs(y) >= 45) {
+          this.isShow = true
+        } else {
+          this.isShow = false
+        }
+      })
+    }, 100)
   }
 }
 </script>
 <style lang="scss" scoped>
 .category-header {
+  height: 100vh;
+  overflow: hidden;
   .ch-content {
-    position: relative;
     padding-bottom: 44px;
-    .cc-nav {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 92.75px;
-      height: 100vh;
-      border-right: 1px solid #efefef;
-      ul {
-        li {
-          display: flex;
-          justify-content: center;
-          line-height: 30px;
-          padding-top: 15px;
+    .cc-content {
+      display: flex;
+      // margin-left: 92.75px;
+      // padding: 10px 10px 10px 0;
+      .cc-nav {
+        min-width: 92.75px;
+        height: 100vh;
+        border-right: 1px solid #efefef;
+        .active {
+          color: #b54f4a;
+          border-left: 3px solid #b54f4a;
+        }
+        ul {
+          li {
+            display: flex;
+            justify-content: center;
+            line-height: 30px;
+            margin-top: 15px;
+          }
         }
       }
-    }
-    .cc-content {
-      margin-left: 92.75px;
-      padding: 10px;
+      .cc-c-content {
+        ul {
+          padding: 10px;
+        }
+      }
       ul {
         li {
           ul {
@@ -681,6 +759,27 @@ export default {
           }
         }
       }
+    }
+  }
+}
+.cc-nav-copy {
+  position: fixed;
+  top: 0;
+  left: 0px;
+  min-width: 92.75px;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #efefef;
+  .active {
+    color: #b54f4a;
+    border-left: 3px solid #b54f4a;
+  }
+  ul {
+    li {
+      display: flex;
+      justify-content: center;
+      line-height: 30px;
+      margin-top: 15px;
     }
   }
 }
