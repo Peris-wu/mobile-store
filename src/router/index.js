@@ -97,6 +97,11 @@ const routes = [
     component: () => import('@/views/Search')
   },
   {
+    path: '/detail',
+    name: 'Detail',
+    component: () => import('@/views/Detail')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: () => import('@/views/NotFound')
