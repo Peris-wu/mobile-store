@@ -688,7 +688,6 @@ export default {
         result += item.clientHeight
         this.recordHeight.push(result)
       })
-      console.log(this.recordHeight)
       this.bScroll = new BScroll(this.$refs.BScrollRef, {
         scrollY: true,
         probeType: 3,

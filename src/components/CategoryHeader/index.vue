@@ -11,7 +11,7 @@
         shape="round"
         background="#b0352f"
         :placeholder="placeholder"
-        disabled
+        :disabled="disabled"
         @click="handleClick"
       />
     </div>
@@ -30,6 +30,10 @@ export default {
     placeholder: {
       type: String,
       default: '请输入'
+    },
+    disabled: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
