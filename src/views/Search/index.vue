@@ -3,23 +3,33 @@
   <div class="search">
     <!-- header s -->
     <div class="s-header">
-      <search-header :disabled="false" placeholder="搜索您喜欢的产品...">
-        <template #right>
+      <search-header
+        :isShowSearch="true"
+        :disabled="false"
+        placeholder="搜索您喜欢的产品..."
+        @onSearch="onSearch"
+      >
+        <!-- <template #right>
           <span class="f16">搜索</span>
-        </template>
+        </template> -->
       </search-header>
     </div>
     <!-- header e -->
     <!-- hot search s -->
     <div class="s-hot-search">
       <div class="title mb15">
-        <i class="iconfont icon-hot color-red f14"></i>
-        <span class="f16 pl5">热门搜索</span>
+        <div class="left">
+          <i class="iconfont icon-hot color-red f14"></i>
+          <span class="f16 pl5">热门搜索</span>
+        </div>
+        <div class="right" @click="cleanHistory">
+          <span class="cleanHistory pl5">清除历史记录</span>
+        </div>
       </div>
       <div class="content">
         <ul>
-          <li v-for="wordItem in hotWordList" :key="wordItem.id">
-            <span class="color-t9 f14">{{ wordItem.word }}</span>
+          <li v-for="wordItem in hotWordList" :key="wordItem">
+            <span class="color-t9 f14">{{ wordItem }}</span>
           </li>
         </ul>
       </div>
@@ -54,6 +64,12 @@
 import SearchHeader from '@/components/CategoryHeader'
 import OverHidden from '@/components/OverHidden'
 import TabBar from '@/components/TabBar'
+import {
+  _getLocalStorage,
+  _setLocalStorage,
+  _removeLocalStorage
+} from '@/utils/handleStorage'
+import { SEARCHHISTORYLIST } from '@/utils/storageConst'
 import mxdh from '@/assets/images/r-mxdh.png'
 import zsxz from '@/assets/images/r-zsxz.jpeg'
 import dhp02 from '@/assets/images/r-dhp02.jpeg'
@@ -68,42 +84,42 @@ export default {
   data() {
     return {
       hotWordList: [
-        {
-          id: 1,
-          word: '易冲泡茶叶'
-        },
-        {
-          id: 2,
-          word: '经典紫砂壶'
-        },
-        {
-          id: 3,
-          word: '送礼'
-        },
-        {
-          id: 4,
-          word: '旅行茶具'
-        },
-        {
-          id: 5,
-          word: '待客茶'
-        },
-        {
-          id: 6,
-          word: '新手入门茶'
-        },
-        {
-          id: 7,
-          word: '大师壶'
-        },
-        {
-          id: 8,
-          word: '福鼎白茶'
-        },
-        {
-          id: 9,
-          word: '绿茶'
-        }
+        // {
+        //   id: 1,
+        //   word: '易冲泡茶叶'
+        // },
+        // {
+        //   id: 2,
+        //   word: '经典紫砂壶'
+        // },
+        // {
+        //   id: 3,
+        //   word: '送礼'
+        // },
+        // {
+        //   id: 4,
+        //   word: '旅行茶具'
+        // },
+        // {
+        //   id: 5,
+        //   word: '待客茶'
+        // },
+        // {
+        //   id: 6,
+        //   word: '新手入门茶'
+        // },
+        // {
+        //   id: 7,
+        //   word: '大师壶'
+        // },
+        // {
+        //   id: 8,
+        //   word: '福鼎白茶'
+        // },
+        // {
+        //   id: 9,
+        //   word: '绿茶'
+        // }
       ],
       recommendList: [
         {
@@ -169,12 +185,32 @@ export default {
           price: 88,
           des: '滋味醇厚，浓浓枣香'
         }
-      ]
+      ],
+      searchWord: ''
     }
   },
   components: { SearchHeader, OverHidden, TabBar },
+  methods: {
+    onSearch(value) {
+      if (!value) return
+      let res = this.hotWordList.find((item) => {
+        return value.trim() === item
+      })
+      if (!res) {
+        this.hotWordList.unshift(value)
+        _setLocalStorage(SEARCHHISTORYLIST, JSON.stringify(this.hotWordList))
+      }
+      // this.$router.push({
+      //   path: '/detail'
+      // })
+    },
+    cleanHistory() {
+      this.hotWordList = []
+      _removeLocalStorage(SEARCHHISTORYLIST)
+    }
+  },
   mounted() {
-    console.log(this.$route)
+    this.hotWordList = JSON.parse(_getLocalStorage(SEARCHHISTORYLIST)) ?? []
   }
 }
 </script>
@@ -184,6 +220,10 @@ export default {
   padding-bottom: 64px;
   .s-hot-search {
     padding: 10px 20px 20px;
+    .title {
+      display: flex;
+      justify-content: space-between;
+    }
     .content {
       ul {
         display: flex;

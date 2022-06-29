@@ -13,9 +13,20 @@
         :placeholder="placeholder"
         :disabled="disabled"
         @click="handleClick"
-      />
+        @search="onSearch"
+        show-action
+        v-model="searchWord"
+      >
+        <template #action v-if="isShowSearch">
+          <slot name="search">
+            <div @click="clickSearch" class="van-search-action-text-color">
+              搜索
+            </div>
+          </slot>
+        </template>
+      </van-search>
     </div>
-    <div class="m-right">
+    <div class="m-right" v-if="!isShowSearch">
       <slot name="right">
         <i class="iconfont icon-home1 f20"></i>
       </slot>
@@ -34,15 +45,27 @@ export default {
     disabled: {
       type: Boolean,
       default: true
+    },
+    isShowSearch: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
-    return {}
+    return {
+      searchWord: ''
+    }
   },
   components: {},
   methods: {
     handleClick() {
       this.$emit('handleClick')
+    },
+    onSearch(value) {
+      this.$emit('onSearch', value)
+    },
+    clickSearch() {
+      this.$emit('onSearch', this.searchWord)
     }
   }
 }
@@ -73,6 +96,12 @@ export default {
     ::v-deep .van-cell {
       padding: 2px 8px 2px 0;
     }
+    ::v-deep .van-search__action:active {
+      background-color: #b53f38;
+    }
+  }
+  .van-search-action-text-color {
+    color: #fff;
   }
 }
 </style>
