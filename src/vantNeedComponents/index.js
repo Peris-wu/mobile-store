@@ -10,7 +10,8 @@ import {
   Sticky,
   Cell,
   CellGroup,
-  Field
+  Field,
+  Form
 } from 'vant'
 
 export default {
@@ -25,5 +26,6 @@ export default {
   Sticky,
   Cell,
   CellGroup,
-  Field
+  Field,
+  Form
 }
