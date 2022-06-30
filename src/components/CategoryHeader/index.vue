@@ -1,12 +1,15 @@
 <!--  -->
 <template>
-  <div class="my-header">
+  <div
+    class="my-header"
+    :style="{ background: isShowBgColor ? '#b0352f' : '' }"
+  >
     <div class="m-left">
       <slot name="left">
-        <i class="iconfont icon-xiaoyuhao f20"></i>
+        <i @click="backPre" class="iconfont icon-xiaoyuhao f20"></i>
       </slot>
     </div>
-    <div class="m-search">
+    <div class="m-search" v-if="needSearch">
       <van-search
         shape="round"
         background="#b0352f"
@@ -14,7 +17,7 @@
         :disabled="disabled"
         @click="handleClick"
         @search="onSearch"
-        show-action
+        :show-action="isShowSearch"
         v-model="searchWord"
       >
         <template #action v-if="isShowSearch">
@@ -49,6 +52,14 @@ export default {
     isShowSearch: {
       type: Boolean,
       default: false
+    },
+    needSearch: {
+      type: Boolean,
+      default: true
+    },
+    isShowBgColor: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -66,6 +77,9 @@ export default {
     },
     clickSearch() {
       this.$emit('onSearch', this.searchWord)
+    },
+    backPre() {
+      this.$router.back()
     }
   }
 }
@@ -74,7 +88,7 @@ export default {
 .my-header {
   display: flex;
   justify-content: space-between;
-  background-color: #b0352f;
+  // background-color: #b0352f;
   height: 44px;
   .m-left,
   .m-right {
