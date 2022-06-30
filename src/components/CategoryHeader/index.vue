@@ -9,6 +9,7 @@
         <i @click="backPre" class="iconfont icon-xiaoyuhao f20"></i>
       </slot>
     </div>
+
     <div class="m-search" v-if="needSearch">
       <van-search
         shape="round"
@@ -28,6 +29,9 @@
           </slot>
         </template>
       </van-search>
+    </div>
+    <div class="flex-align-center">
+      <slot name="center"></slot>
     </div>
     <div class="m-right" v-if="!isShowSearch">
       <slot name="right">

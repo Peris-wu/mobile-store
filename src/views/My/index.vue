@@ -5,7 +5,7 @@
     <div class="header-login">
       <my-header :needSearch="false" :isShowBgColor="false"></my-header>
       <div class="login-btn-wrap">
-        <span class="login-btn f14">登录 / 注册</span>
+        <span class="login-btn f14" @click="toLogin">登录 / 注册</span>
       </div>
     </div>
     <!-- header and login-btn e -->
@@ -88,8 +88,12 @@ export default {
       ]
     }
   },
-
-  components: { TabBar, MyHeader, DomainCom }
+  components: { TabBar, MyHeader, DomainCom },
+  methods: {
+    toLogin() {
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

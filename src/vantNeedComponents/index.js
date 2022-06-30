@@ -9,7 +9,8 @@ import {
   NavBar,
   Sticky,
   Cell,
-  CellGroup
+  CellGroup,
+  Field
 } from 'vant'
 
 export default {
@@ -23,5 +24,6 @@ export default {
   NavBar,
   Sticky,
   Cell,
-  CellGroup
+  CellGroup,
+  Field
 }
