@@ -7,7 +7,9 @@ import {
   SwipeItem,
   Lazyload,
   NavBar,
-  Sticky
+  Sticky,
+  Cell,
+  CellGroup
 } from 'vant'
 
 export default {
@@ -19,5 +21,7 @@ export default {
   SwipeItem,
   Lazyload,
   NavBar,
-  Sticky
+  Sticky,
+  Cell,
+  CellGroup
 }

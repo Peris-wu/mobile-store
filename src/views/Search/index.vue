@@ -200,9 +200,9 @@ export default {
         this.hotWordList.unshift(value)
         _setLocalStorage(SEARCHHISTORYLIST, JSON.stringify(this.hotWordList))
       }
-      // this.$router.push({
-      //   path: '/detail'
-      // })
+      this.$router.push({
+        path: '/detail'
+      })
     },
     cleanHistory() {
       this.hotWordList = []
