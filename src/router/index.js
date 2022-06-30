@@ -102,6 +102,11 @@ const routes = [
     component: () => import('@/views/Detail')
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: () => import('@/views/NotFound')
