@@ -193,13 +193,9 @@ export default {
   methods: {
     onSearch(value) {
       if (!value) return
-      let res = this.hotWordList.find((item) => {
-        return value.trim() === item
-      })
-      if (!res) {
-        this.hotWordList.unshift(value)
-        _setLocalStorage(SEARCHHISTORYLIST, JSON.stringify(this.hotWordList))
-      }
+      this.hotWordList.unshift(value)
+      this.hotWordList = [...new Set(this.hotWordList)]
+      _setLocalStorage(SEARCHHISTORYLIST, JSON.stringify(this.hotWordList))
       this.$router.push({
         path: '/detail'
       })

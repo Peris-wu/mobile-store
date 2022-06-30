@@ -95,6 +95,7 @@ export default {
 <style lang="scss" scoped>
 .my {
   background-color: #f5f5f5;
+  padding-bottom: 64px;
   .header-login {
     background: url('@/assets/images/cbtopbg.jpg') center center no-repeat;
     background-size: cover;
