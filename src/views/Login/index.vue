@@ -9,7 +9,7 @@
       </login-header>
     </div>
     <div class="l-login-info">
-      <van-form @submit="onSubmit">
+      <van-form @submit="onSubmit" ref="userInfoRef">
         <van-cell-group>
           <van-field
             v-model="userInfo.iphone"
@@ -17,6 +17,8 @@
             type="tel"
             :rules="rules.iphone"
             name="iphone"
+            :error="false"
+            :style="{ border: isShowErrorIphone ? '1px solid red' : '' }"
           />
           <van-field
             v-model="userInfo.verifyCode"
@@ -25,9 +27,30 @@
             :rules="rules.verifyCode"
             placeholder="请输入短信验证码"
             name="verifyCode"
+            :error="false"
+            :style="{ border: isShowErrorVerify ? '1px solid red' : '' }"
           >
             <template #button>
-              <van-button size="mini" type="primary">获取短信验证码</van-button>
+              <van-button
+                size="mini"
+                type="primary"
+                @click.prevent="geiVerifyCode"
+                :disabled="showCountDown"
+              >
+                <span v-if="!showCountDown">获取短信验证码</span>
+                <van-count-down
+                  v-else
+                  :time="10000"
+                  style="min-width: 92px; color: #fff"
+                  format="ss"
+                  ref="countDownRef"
+                  @finish="countDownFinish"
+                >
+                  <template #default="timeData">
+                    <span class="block">{{ timeData.seconds }}</span>
+                  </template>
+                </van-count-down>
+              </van-button>
             </template>
           </van-field>
           <div class="login-btn">
@@ -43,26 +66,31 @@
 <script>
 import LoginHeader from '@/components/CategoryHeader'
 import TabBar from '@/components/TabBar'
+import { Notify } from 'vant'
 export default {
   name: 'LoginView',
   data() {
-    // this.rep = /^1[23456789]\d{9}$/
+    this.reflectObj = {
+      iphone: /^1[23456789]\d{9}$/,
+      verifyCode: /^\d{4}$/
+    }
     return {
       userInfo: {
         iphone: '',
         verifyCode: ''
       },
+      showCountDown: false,
+      isShowErrorIphone: false,
+      isShowErrorVerify: false,
       rules: {
         iphone: [
           {
-            pattern: /^1[23456789]\d{9}$/,
-            message: '请输入正确的手机号'
+            validator: (val) => this.validator(val, 'iphone')
           }
         ],
         verifyCode: [
           {
-            pattern: /^\d{4}$/,
-            message: '请输入正确的验证码'
+            validator: (val) => this.validator(val, 'verifyCode')
           }
         ]
       }
@@ -70,11 +98,52 @@ export default {
   },
   components: { TabBar, LoginHeader },
   methods: {
-    fn(value) {
-      console.log(value.target.value)
-    },
     onSubmit(value) {
       console.log(value)
+    },
+    validator(val, name) {
+      let res = this.reflectObj[name].test(val)
+      if (!res) {
+        if (name === 'iphone') {
+          this.isShowErrorIphone = true
+          Notify({
+            background: 'rgba(0,0,0,.8)',
+            message: '手机号有误',
+            duration: '1500'
+          })
+        } else {
+          this.isShowErrorVerify = true
+          if (!this.isShowErrorIphone) {
+            Notify({
+              background: 'rgba(0,0,0,.8)',
+              message: '验证码有误',
+              duration: '1500'
+            })
+          }
+        }
+      } else {
+        if (name === 'iphone') {
+          this.isShowErrorIphone = false
+        } else {
+          this.isShowErrorVerify = false
+        }
+      }
+      return res
+    },
+    async geiVerifyCode() {
+      try {
+        // 手机号合法
+        await this.$refs.userInfoRef.validate('iphone')
+        this.showCountDown = true
+        this.$nextTick(() => {
+          this.$refs.countDownRef.start()
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    countDownFinish() {
+      this.showCountDown = false
     }
   }
 }
