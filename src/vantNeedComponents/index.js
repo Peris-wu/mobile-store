@@ -11,7 +11,9 @@ import {
   Cell,
   CellGroup,
   Field,
-  Form
+  Form,
+  Notify,
+  CountDown
 } from 'vant'
 
 export default {
@@ -27,5 +29,7 @@ export default {
   Cell,
   CellGroup,
   Field,
-  Form
+  Form,
+  Notify,
+  CountDown
 }
