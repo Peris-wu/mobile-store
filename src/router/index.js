@@ -103,8 +103,24 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login')
+    component: () => import('@/views/Login'),
+    children: [
+      {
+        path: '',
+        name: 'Login',
+        component: () => import('@/views/Login/Login')
+      },
+      {
+        path: 'register',
+        name: 'Register',
+        component: () => import('@/views/Login/SingIn')
+      },
+      {
+        path: 'findPassword',
+        name: 'FindPassword',
+        component: () => import('@/views/Login/FindPassWord')
+      }
+    ]
   },
   {
     path: '*',
