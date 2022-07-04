@@ -677,6 +677,9 @@ export default {
     },
     clickNav(index) {
       this.bScroll.scrollTo(0, -this.recordHeight[index] - 44, 300)
+    },
+    refresh() {
+      this.bScroll.refresh()
     }
   },
   mounted() {
@@ -692,7 +695,10 @@ export default {
         scrollY: true,
         probeType: 3,
         bounce: false,
-        click: true
+        click: true,
+        disableMouse: false,
+        disableTouch: false,
+        mouseWheel: true
       })
       this.bScroll.on('scroll', ({ y }) => {
         this.bScrollYPos = y
