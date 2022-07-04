@@ -5,7 +5,12 @@
     <div class="header-login">
       <my-header :needSearch="false" :isShowBgColor="false"></my-header>
       <div class="login-btn-wrap">
-        <span class="login-btn f14" @click="toLogin">登录 / 注册</span>
+        <div v-if="!isLogin">
+          <span class="login-btn f14" @click="toLogin">登录 / 注册</span>
+        </div>
+        <div v-else>
+          <span>{{ userInfo.username }}</span>
+        </div>
       </div>
     </div>
     <!-- header and login-btn e -->
@@ -19,6 +24,7 @@
 <script>
 import MyHeader from '@/components/CategoryHeader'
 import DomainCom from '@/views/My/Domain'
+import loginStore from '@/store/login'
 import TabBar from '@/components/TabBar'
 export default {
   name: 'MyView',
@@ -85,7 +91,9 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      isLogin: false,
+      userInfo: null
     }
   },
   components: { TabBar, MyHeader, DomainCom },
@@ -93,6 +101,11 @@ export default {
     toLogin() {
       this.$router.push('/login')
     }
+  },
+  mounted() {
+    const useLoginState = loginStore()
+    this.isLogin = useLoginState.isLogin
+    this.userInfo = useLoginState.userInfo
   }
 }
 </script>

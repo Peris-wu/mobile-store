@@ -50,6 +50,8 @@
 import LoginHeader from '@/components/CategoryHeader'
 import { Notify } from 'vant'
 import TabBar from '@/components/TabBar'
+import { login } from '@/axios/api/userApi'
+import loginStore from '@/store/login'
 export default {
   name: 'LoginView',
   data() {
@@ -80,9 +82,24 @@ export default {
   },
   components: { TabBar, LoginHeader },
   methods: {
-    onSubmit(validateInfo) {
-      console.log(validateInfo)
-      // 发起请求
+    async onSubmit(validateInfo) {
+      try {
+        const { username, password } = validateInfo
+        // 发起请求
+        let res = await login('/api/users/login', { username, password })
+        if (res.code === 1) {
+          const { token } = res
+          const useLoginStore = loginStore()
+          useLoginStore.setTokenStorage({ token })
+          useLoginStore.setUserInfoState({ userInfo: res })
+          useLoginStore.setLoginState({ userInfo: res })
+          this.$router.replace('/my')
+        } else {
+          console.log(res.message)
+        }
+      } catch (e) {
+        console.log(e)
+      }
     },
     validator(val, mark) {
       let res = this.ruleRep[mark].test(val)
@@ -109,6 +126,10 @@ export default {
       }
       return res
     }
+  },
+  mounted() {
+    // const useLoginStore = loginStore()
+    // useLoginStore.setTokenStorage('peris')
   }
 }
 </script>
