@@ -21,8 +21,8 @@ const loginStore = defineStore('login', {
       _setLocalStorage(TOKEN, token)
     },
     [setUserInfoState]({ userInfo }) {
-      const hanldeUserInfo = JSON.stringify(userInfo)
-      _setLocalStorage(USERINFO, hanldeUserInfo)
+      const handleUserInfo = JSON.stringify(userInfo)
+      _setLocalStorage(USERINFO, handleUserInfo)
     },
     // 更新loginState状态
     [setLoginState]({ userInfo }) {
