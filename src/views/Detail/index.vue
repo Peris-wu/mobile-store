@@ -8,7 +8,7 @@
         :style="opacityOptionOne"
       >
         <i class="iconfont icon-zuojiantou"></i>
-        <i class="iconfont icon-home1"></i>
+        <i class="iconfont icon-home1" @click="backHome"></i>
       </header>
       <header
         class="header-status-two"
@@ -87,17 +87,29 @@
           </div>
         </div>
         <div class="goods_detail mt10">
-          <img src="~@/assets/images/d-tgy02.jpg" />
-          <img src="~@/assets/images/d-goods-cs.jpg" />
+          <img
+            v-for="img in goodsInfo.picArr"
+            :key="img.id"
+            :src="require(`@/assets/images/${img.pic_url}`)"
+          />
         </div>
       </div>
     </div>
     <div class="cart">
       <van-goods-action>
         <van-goods-action-icon icon="chat-o" text="客服" color="#ee0a24" />
-        <van-goods-action-icon icon="cart-o" text="购物车" :badge="2" />
+        <van-goods-action-icon
+          icon="cart-o"
+          text="购物车"
+          :badge="goods_sum ? goods_sum : ''"
+          @click="navigateToCart"
+        />
         <van-goods-action-icon icon="star-o" text="已收藏" color="#ff5000" />
-        <van-goods-action-button type="warning" text="加入购物车" />
+        <van-goods-action-button
+          type="warning"
+          text="加入购物车"
+          @click="addGoods()"
+        />
         <van-goods-action-button type="danger" text="立即购买" />
       </van-goods-action>
     </div>
@@ -105,7 +117,8 @@
 </template>
 
 <script>
-import { getGoods } from '@/axios/api/goodsApi'
+// addGoods
+import { getGoods, addGoods } from '@/axios/api/goodsApi'
 import BScroll from '@better-scroll/core'
 import dSwiper01 from '@/assets/images/d-swiper01.jpeg'
 import dSwiper02 from '@/assets/images/d-swiper02.jpeg'
@@ -113,6 +126,7 @@ import dSwiper03 from '@/assets/images/d-swiper03.jpeg'
 import dSwiper04 from '@/assets/images/d-swiper04.jpeg'
 import dSwiper05 from '@/assets/images/d-swiper05.jpeg'
 import dSwiper06 from '@/assets/images/d-swiper06.jpeg'
+import { Notify } from 'vant'
 // import dTgy02 from '@/assets/images/d-tgy02.jpg'
 // import dGoodsCs from '@/assets/images/d-goods-cs.jpg'
 
@@ -132,6 +146,7 @@ export default {
   data() {
     return {
       goodsInfo: {},
+      goods_sum: 0,
       showList: false,
       opacityOptionOne: {},
       opacityOptionTwo: {},
@@ -165,13 +180,24 @@ export default {
           id: 6,
           imgUrl: dSwiper06
         }
-      ]
+      ],
+      handleDebounce: ''
     }
   },
   components: {},
   methods: {
+    navigateToCart() {
+      this.$router.push('/cart')
+    },
+    addGoods() {
+      this.goods_sum += 1
+      this.handleDebounce()
+      // const result = await addGoods('/api/cart/addGoods', params)
+    },
+    backHome() {
+      this.$router.push('/')
+    },
     showPopup() {
-      console.log(123)
       this.showList = true
     },
     onChange(index) {
@@ -191,13 +217,28 @@ export default {
           goods_id: this.$route.params.id
         })
         this.goodsInfo = result.data
-        console.log(this.goodsInfo)
       } catch (e) {
         console.log(e)
       }
     }
   },
   mounted() {
+    //
+    this.handleDebounce = this._lodash.debounce(async function () {
+      const params = {
+        goods_id: this.goodsInfo.id,
+        goods_sum: this.goods_sum
+      }
+      const res = await addGoods('/api/cart/add-goods', params)
+      console.log(res)
+      if (res.code === 0) {
+        Notify({
+          type: 'success',
+          message: '添加成功'
+        })
+      }
+    }, 300)
+
     this.initGoodsInfo()
 
     setTimeout(() => {
