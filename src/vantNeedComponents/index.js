@@ -13,7 +13,13 @@ import {
   Field,
   Form,
   Notify,
-  CountDown
+  CountDown,
+  CouponCell,
+  CouponList,
+  Popup,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton
 } from 'vant'
 
 export default {
@@ -31,5 +37,11 @@ export default {
   Field,
   Form,
   Notify,
-  CountDown
+  CountDown,
+  CouponCell,
+  CouponList,
+  Popup,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton
 }

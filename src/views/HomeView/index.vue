@@ -104,7 +104,11 @@
       </div>
       <div class="content">
         <ul>
-          <li v-for="hotItem in hotRecommendList" :key="hotItem.id">
+          <li
+            v-for="hotItem in hotRecommendList"
+            :key="hotItem.id"
+            @click="toDetail(hotItem.id)"
+          >
             <img :src="hotItem.imgUrl" />
             <div class="tea-info">
               <div class="tea-name-des">
@@ -401,6 +405,12 @@ export default {
         // 页面切换时，滚动条平滑切换至顶部
         top: 0,
         behavior: 'smooth'
+      })
+    },
+    toDetail(id) {
+      console.log(id)
+      this.$router.push({
+        path: `/detail/${id}`
       })
     }
   },

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '@/views/HomeView'
 import ShowView from '@/views/ShowView'
+import useLoginStore from '@/store/login'
 
 Vue.use(VueRouter)
 
@@ -97,7 +98,7 @@ const routes = [
     component: () => import('@/views/Search')
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'Detail',
     component: () => import('@/views/Detail')
   },
@@ -131,5 +132,15 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+router.beforeEach((to, from, next) => {
+  const loginStore = useLoginStore()
+  if (to.path === '/login') {
+    if (!loginStore.isLogin) {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 export default router
