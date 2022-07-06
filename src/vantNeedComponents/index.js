@@ -19,7 +19,10 @@ import {
   Popup,
   GoodsAction,
   GoodsActionIcon,
-  GoodsActionButton
+  GoodsActionButton,
+  Radio,
+  Checkbox,
+  Stepper
 } from 'vant'
 
 export default {
@@ -43,5 +46,8 @@ export default {
   Popup,
   GoodsAction,
   GoodsActionIcon,
-  GoodsActionButton
+  GoodsActionButton,
+  Radio,
+  Checkbox,
+  Stepper
 }
