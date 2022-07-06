@@ -708,7 +708,7 @@ export default {
           this.isShow = false
         }
       })
-    }, 100)
+    }, 200)
   }
 }
 </script>

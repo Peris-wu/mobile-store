@@ -13,18 +13,17 @@ Object.keys(vantComponents).forEach((component) => {
 })
 
 Vue.config.productionTip = false
-Vue.use(PiniaVuePlugin)
 const pinia = createPinia()
-
-new Vue({
-  router,
-  pinia,
-  render: (h) => h(App)
-}).$mount('#app')
-
+Vue.use(PiniaVuePlugin)
+Vue.use(pinia)
 // userInfo数据持久化
 const isExsitUserInfo = _getLocalStorage(USERINFO)
 if (isExsitUserInfo) {
   const userInfo = JSON.parse(isExsitUserInfo)
   loginStore().setLoginState({ userInfo })
 }
+new Vue({
+  router,
+  pinia,
+  render: (h) => h(App)
+}).$mount('#app')
