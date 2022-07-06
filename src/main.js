@@ -7,12 +7,14 @@ import vantComponents from '@/vantNeedComponents'
 import { USERINFO } from '@/utils/storageConst'
 import { _getLocalStorage } from '@/utils/handleStorage'
 import loginStore from '@/store/login'
+import _ from 'lodash'
 
 Object.keys(vantComponents).forEach((component) => {
   Vue.use(vantComponents[component])
 })
 
 Vue.config.productionTip = false
+Vue.prototype._lodash = _
 const pinia = createPinia()
 Vue.use(PiniaVuePlugin)
 Vue.use(pinia)
