@@ -2,9 +2,10 @@ import { defineStore } from 'pinia'
 import {
   setTokenStorage,
   setLoginState,
-  setUserInfoState
+  setUserInfoState,
+  initUserInfoState
 } from './actions-type'
-import { _setLocalStorage } from '@/utils/handleStorage'
+import { _setLocalStorage, _removeLocalStorage } from '@/utils/handleStorage'
 import { TOKEN, USERINFO } from '@/utils/storageConst'
 const loginStore = defineStore('login', {
   state() {
@@ -29,6 +30,15 @@ const loginStore = defineStore('login', {
       this.isLogin = true
       this.token = userInfo.token
       this.userInfo = userInfo
+    },
+    [initUserInfoState]() {
+      _removeLocalStorage(TOKEN)
+      _removeLocalStorage(USERINFO)
+      this.$patch({
+        isLogin: false,
+        token: '',
+        userInfo: null
+      })
     }
   }
 })

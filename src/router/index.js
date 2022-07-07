@@ -131,7 +131,9 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: process.env.VUE_ROUTER_MODE,
+  base: process.env.VUE_ROUTER_BASE
 })
 router.beforeEach((to, from, next) => {
   const loginStore = useLoginStore()

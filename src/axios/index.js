@@ -1,5 +1,7 @@
 import axios from 'axios'
 import loginStore from '@/store/login'
+import router from '@/router'
+import { initUserInfoState } from '@/store/actions-type'
 
 const ajax = axios.create({
   url: 'http://localhost:8080',
@@ -20,6 +22,14 @@ ajax.interceptors.request.use(
 
 ajax.interceptors.response.use(
   function (response) {
+    if (response.data.code === 11) {
+      const useLoginState = loginStore()
+
+      useLoginState[initUserInfoState]()
+      router.push({
+        path: '/login'
+      })
+    }
     return response
   },
   function (error) {
