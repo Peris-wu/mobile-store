@@ -54,7 +54,7 @@
           <span class="color-red">￥99.00</span>
         </span>
       </div>
-      <div>
+      <div class="pay-btn">
         <van-button type="danger">去结算</van-button>
       </div>
     </div>
@@ -146,6 +146,12 @@ export default {
     display: flex;
     flex-direction: column;
     flex: 1;
+  }
+  .pay-btn {
+    width: 120px;
+    ::v-deep .van-button {
+      width: 100%;
+    }
   }
 }
 ::v-deep .van-checkbox__icon--checked .van-icon {

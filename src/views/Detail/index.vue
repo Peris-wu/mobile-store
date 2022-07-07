@@ -101,7 +101,7 @@
         <van-goods-action-icon
           icon="cart-o"
           text="购物车"
-          :badge="goods_sum ? goods_sum : ''"
+          :badge="goodsInfo.goods_sum ? goodsInfo.goods_sum : ''"
           @click="navigateToCart"
         />
         <van-goods-action-icon icon="star-o" text="已收藏" color="#ff5000" />
@@ -117,9 +117,9 @@
 </template>
 
 <script>
-// addGoods
 import { getGoods, addGoods } from '@/axios/api/goodsApi'
 import BScroll from '@better-scroll/core'
+import loginStore from '@/store/login'
 import dSwiper01 from '@/assets/images/d-swiper01.jpeg'
 import dSwiper02 from '@/assets/images/d-swiper02.jpeg'
 import dSwiper03 from '@/assets/images/d-swiper03.jpeg'
@@ -190,7 +190,16 @@ export default {
       this.$router.push('/cart')
     },
     addGoods() {
-      this.goods_sum += 1
+      const useLogin = loginStore()
+
+      if (!useLogin.token) {
+        Notify({
+          message: '你未登录,请登录'
+        })
+        this.$router.push('/login')
+        return
+      }
+      this.goodsInfo.goods_sum += 1
       this.handleDebounce()
       // const result = await addGoods('/api/cart/addGoods', params)
     },
@@ -216,6 +225,7 @@ export default {
         const result = await getGoods('/api/goods/detail', {
           goods_id: this.$route.params.id
         })
+        console.log(result)
         this.goodsInfo = result.data
       } catch (e) {
         console.log(e)
@@ -227,7 +237,7 @@ export default {
     this.handleDebounce = this._lodash.debounce(async function () {
       const params = {
         goods_id: this.goodsInfo.id,
-        goods_sum: this.goods_sum
+        goods_sum: this.goodsInfo.goods_sum
       }
       const res = await addGoods('/api/cart/add-goods', params)
       console.log(res)
