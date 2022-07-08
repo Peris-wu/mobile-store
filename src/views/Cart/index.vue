@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       checked: true,
-      value: 1
+      value: 2
     }
   },
 
