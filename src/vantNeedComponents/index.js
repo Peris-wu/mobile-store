@@ -22,7 +22,9 @@ import {
   GoodsActionButton,
   Radio,
   Checkbox,
-  Stepper
+  Stepper,
+  Tabbar,
+  TabbarItem
 } from 'vant'
 
 export default {
@@ -49,5 +51,7 @@ export default {
   GoodsActionButton,
   Radio,
   Checkbox,
-  Stepper
+  Stepper,
+  Tabbar,
+  TabbarItem
 }

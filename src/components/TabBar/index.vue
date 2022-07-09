@@ -10,6 +10,10 @@
       >
         <i :class="['iconfont', ...iconItem.className]" class="f24"></i>
         <span>{{ iconItem.text }}</span>
+        <!-- <van-tabbar-item badge="3">
+          <span>{{ iconItem.text }}</span>
+          <i :class="['iconfont', ...iconItem.className]" class="f24"></i>
+        </van-tabbar-item> -->
       </li>
     </ul>
   </div>

@@ -9,7 +9,11 @@
       <div class="title f14">{{ domainItem.title }}</div>
       <div class="domain-list">
         <ul>
-          <li v-for="dItem in domainItem.list" :key="dItem.id">
+          <li
+            v-for="dItem in domainItem.list"
+            :key="dItem.id"
+            @click="toTargetUrl(dItem.path)"
+          >
             <div class="left-wrap">
               <i
                 class="iconfont pr10 f18"
@@ -41,8 +45,12 @@ export default {
   data() {
     return {}
   },
-
-  components: {}
+  components: {},
+  methods: {
+    toTargetUrl(path) {
+      this.$router.push(path)
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

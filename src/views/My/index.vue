@@ -39,19 +39,22 @@ export default {
               id: 11,
               iconColor: '#ff7e45',
               icon: 'icon-pintuan',
-              text: '我的拼团'
+              text: '我的拼团',
+              path: '/my-group-book'
             },
             {
               id: 12,
               iconColor: '#ffce54',
               icon: 'icon-shoucang',
-              text: '我的收藏'
+              text: '我的收藏',
+              path: '/my-stars'
             },
             {
               id: 13,
               iconColor: '#ff4b4b',
               icon: 'icon-dizhiguanli-my',
-              text: '地址管理'
+              text: '地址管理',
+              path: '/address-manage'
             }
           ]
         },
@@ -63,7 +66,8 @@ export default {
               id: 21,
               iconColor: '#ff774f',
               icon: 'icon-youhuiquan',
-              text: '优惠券'
+              text: '优惠券',
+              path: '/discount-coupon'
             }
           ]
         },
@@ -81,13 +85,15 @@ export default {
               id: 32,
               iconColor: '#b1c937',
               icon: 'icon-yijianxiang',
-              text: '意见箱'
+              text: '意见箱',
+              path: '/my-service'
             },
             {
               id: 33,
               iconColor: '#95abf3',
               icon: 'icon-geren',
-              text: '加入茶师'
+              text: '加入茶师',
+              path: '/join-tea-napkin'
             }
           ]
         }
