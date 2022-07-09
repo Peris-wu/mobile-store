@@ -127,6 +127,11 @@ const routes = [
     ]
   },
   {
+    path: '/address-manage',
+    name: 'AddressManage',
+    component: () => import('@/views/AddressManage')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: () => import('@/views/NotFound')
