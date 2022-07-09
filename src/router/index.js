@@ -85,7 +85,10 @@ const routes = [
   {
     path: '/cart',
     name: 'Cart',
-    component: Cart
+    component: Cart,
+    meta: {
+      needLogin: true
+    }
   },
   {
     path: '/my',
@@ -142,7 +145,15 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else {
-    next()
+    if (to.meta.needLogin) {
+      if (!loginStore.isLogin) {
+        next('/login')
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
   }
 })
 export default router

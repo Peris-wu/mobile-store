@@ -108,7 +108,7 @@
         <van-goods-action-button
           type="warning"
           text="加入购物车"
-          @click="addGoods()"
+          @click="addGood()"
         />
         <van-goods-action-button type="danger" text="立即购买" />
       </van-goods-action>
@@ -189,9 +189,8 @@ export default {
     navigateToCart() {
       this.$router.push('/cart')
     },
-    addGoods() {
+    addGood() {
       const useLogin = loginStore()
-
       if (!useLogin.token) {
         Notify({
           message: '你未登录,请登录'
@@ -201,7 +200,6 @@ export default {
       }
       this.goodsInfo.goods_sum += 1
       this.handleDebounce()
-      // const result = await addGoods('/api/cart/addGoods', params)
     },
     backHome() {
       this.$router.push('/')
@@ -225,7 +223,6 @@ export default {
         const result = await getGoods('/api/goods/detail', {
           goods_id: this.$route.params.id
         })
-        console.log(result)
         this.goodsInfo = result.data
       } catch (e) {
         console.log(e)
