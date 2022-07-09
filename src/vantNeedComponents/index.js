@@ -24,7 +24,8 @@ import {
   Checkbox,
   Stepper,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  AddressEdit
 } from 'vant'
 
 export default {
@@ -53,5 +54,6 @@ export default {
   Checkbox,
   Stepper,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  AddressEdit
 }

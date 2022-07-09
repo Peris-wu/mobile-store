@@ -129,7 +129,20 @@ const routes = [
   {
     path: '/address-manage',
     name: 'AddressManage',
-    component: () => import('@/views/AddressManage')
+    component: () => import('@/views/AddressManage'),
+    redirect: '/address-manage/show',
+    children: [
+      {
+        path: 'show',
+        name: 'AddressShow',
+        component: () => import('@/views/AddressManage/AddressShow')
+      },
+      {
+        path: 'add-address',
+        name: 'AddAddress',
+        component: () => import('@/views/AddressManage/AddAddress')
+      }
+    ]
   },
   {
     path: '*',
