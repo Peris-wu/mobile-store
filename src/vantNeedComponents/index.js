@@ -25,7 +25,8 @@ import {
   Stepper,
   Tabbar,
   TabbarItem,
-  AddressEdit
+  AddressEdit,
+  Loading
 } from 'vant'
 
 export default {
@@ -55,5 +56,6 @@ export default {
   Stepper,
   Tabbar,
   TabbarItem,
-  AddressEdit
+  AddressEdit,
+  Loading
 }
