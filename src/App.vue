@@ -3,16 +3,27 @@
     <!-- <transition name="test">
     </transition> -->
     <router-view></router-view>
+    <div class="loading" v-show="loadingStore.isShow">
+      <van-loading type="spinner" color="#1989fa"></van-loading>
+    </div>
   </div>
 </template>
-<!-- <style scoped lang="scss">
-.test-enter {
-  opacity: 0;
+<script>
+import useLoadingStore from '@/store/loading'
+export default {
+  name: 'App',
+  data() {
+    return {
+      loadingStore: useLoadingStore()
+    }
+  }
 }
-.test-enter-active {
-  animation: all 1s linear;
+</script>
+<style scoped lang="scss">
+.loading {
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
 }
-.test-enter-to {
-  opacity: 1;
-}
-</style> -->
+</style>

@@ -161,6 +161,8 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     if (!loginStore.isLogin) {
       next()
+    } else {
+      next(from.path)
     }
   } else {
     if (to.meta.needLogin) {

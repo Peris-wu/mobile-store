@@ -3,7 +3,10 @@
   <div class="edit-address">
     <all-header>
       <template #left>
-        <i class="iconfont icon-xiaoyuhao color-fff"></i>
+        <i
+          class="iconfont icon-xiaoyuhao color-fff"
+          @click="$router.back()"
+        ></i>
       </template>
       <template #center>
         <span class="color-fff">编辑地址</span>
@@ -39,7 +42,9 @@ export default {
   },
   components: { AllHeader },
   methods: {
-    onSave() {},
+    onSave(info) {
+      console.log(info)
+    },
     onDelete() {},
     onChangeDetail() {}
   }
