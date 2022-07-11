@@ -81,7 +81,6 @@ export default {
     async initAddressList() {
       try {
         const { data } = await getAddressList('/api/address/address-list')
-        console.log(data)
         this.addressStore[INITADDRESSLIST](data)
       } catch (e) {
         console.log(e.message)
