@@ -78,7 +78,10 @@
         <van-button
           type="danger"
           v-show="isEdit"
-          :disabled="cartStore.cartList.length === 0 || isCheckedGood === -1"
+          :disabled="
+            (cartStore.cartList && cartStore.cartList.length === 0) ||
+            isCheckedGood === -1
+          "
         >
           去结算
         </van-button>
@@ -115,13 +118,13 @@ export default {
   },
   computed: {
     isCheckedGood() {
-      return this.cartStore.cartList.findIndex((cartItem) => {
+      return this.cartStore.cartList?.findIndex((cartItem) => {
         return cartItem.checked
       })
     },
     goods_sum() {
       let goodsSum = 0
-      this.cartStore.cartList.forEach((cartItem) => {
+      this.cartStore.cartList?.forEach((cartItem) => {
         if (cartItem.checked) {
           goodsSum += cartItem.goods_sum
         }
@@ -130,7 +133,7 @@ export default {
     },
     goods_price_sum() {
       let goodsPriceSum = 0
-      this.cartStore.cartList.forEach((cartItem) => {
+      this.cartStore.cartList?.forEach((cartItem) => {
         if (cartItem.checked) {
           goodsPriceSum += cartItem.goods_sum * cartItem.goods_price
         }
@@ -141,18 +144,26 @@ export default {
   components: { CartHeader },
   methods: {
     async deleteSingleGood(cartItem, index) {
-      this.cartStore[DELETESINGLEGOODS](index)
-      const result = await _deleteGoods('/api/cart/delete-goods', {
-        deleteTarget: [cartItem.id]
-      })
-      console.log(result)
+      try {
+        this.cartStore[DELETESINGLEGOODS](index)
+        const result = await _deleteGoods('/api/cart/delete-goods', {
+          deleteTarget: [cartItem.id]
+        })
+        console.log(result)
+      } catch (e) {
+        console.log(e.message)
+      }
     },
     async deleteGoods() {
-      const beDeleteArr = this.cartStore[DELETEBATCH]()
-      const result = await _deleteGoods('/api/cart/delete-goods', {
-        deleteTarget: beDeleteArr
-      })
-      console.log(result)
+      try {
+        const beDeleteArr = this.cartStore[DELETEBATCH]()
+        const result = await _deleteGoods('/api/cart/delete-goods', {
+          deleteTarget: beDeleteArr
+        })
+        console.log(result)
+      } catch (e) {
+        console.log(e.message)
+      }
     },
     changeEdit() {
       this.isEdit = !this.isEdit
@@ -161,11 +172,15 @@ export default {
       this.handleDebounce(goods_sum, cartItem.goods_id)
     },
     async addGood(goods_sum, goods_id) {
-      const result = await _addGood('/api/cart/add-goods', {
-        goods_sum,
-        goods_id
-      })
-      console.log(result)
+      try {
+        const result = await _addGood('/api/cart/add-goods', {
+          goods_sum,
+          goods_id
+        })
+        console.log(result)
+      } catch (e) {
+        console.log(e.message)
+      }
     },
     allChangeChecked() {
       this.cartStore[ALLCHECKEDCHANGE]()
@@ -176,7 +191,7 @@ export default {
     async initCart() {
       try {
         const { data } = await getCartList('/api/cart/data')
-        data.forEach((cartItem) => {
+        data?.forEach((cartItem) => {
           this.$set(cartItem, 'checked', true)
         })
         this.cartStore[INITCARTLIST](data)
