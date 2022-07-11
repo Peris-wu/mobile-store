@@ -8,10 +8,14 @@ import { USERINFO } from '@/utils/storageConst'
 import { _getLocalStorage } from '@/utils/handleStorage'
 import loginStore from '@/store/login'
 import _ from 'lodash'
+import FastClick from 'fastclick'
 
 Object.keys(vantComponents).forEach((component) => {
   Vue.use(vantComponents[component])
 })
+
+// 禁止双击缩放
+FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 Vue.prototype._lodash = _
@@ -24,6 +28,7 @@ if (isExsitUserInfo) {
   const userInfo = JSON.parse(isExsitUserInfo)
   loginStore().setLoginState({ userInfo })
 }
+
 new Vue({
   router,
   pinia,

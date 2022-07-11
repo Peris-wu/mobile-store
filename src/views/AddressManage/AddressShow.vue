@@ -6,20 +6,32 @@
         <i class="iconfont icon-xiaoyuhao color-fff"></i>
       </template>
       <template #center>
-        <span>我的地址</span>
+        <span class="color-fff">我的地址</span>
       </template>
     </all-header>
     <section class="address-list">
       <ul>
-        <li>
+        <li
+          v-for="addressItem in addressStore.addressList"
+          :key="addressItem.id"
+          @click="toEditAddressPage(addressItem)"
+        >
           <div class="address-info">
             <div class="pt5">
-              <span>peris</span>
-              <span class="pl20">13225878569</span>
+              <span>{{ addressItem.user_name }}</span>
+              <span class="pl20">{{ addressItem.user_tel }}</span>
             </div>
             <div class="pb5">
-              <span class="color-red">[默认]</span>
-              <span>辽宁省 沈阳市 和平区 123</span>
+              <span
+                class="color-red"
+                v-show="addressItem.address_default === 1"
+              >
+                [默认]
+              </span>
+              <span :class="[addressItem.address_default === 1 ? 'pl5' : '']">
+                {{ addressItem.user_address }}
+              </span>
+              <span>{{ addressItem.user_address_detail }}</span>
             </div>
           </div>
           <div class="right-arrow">
@@ -27,12 +39,12 @@
           </div>
         </li>
       </ul>
-      <div class="address-empty" v-if="false">
+      <div class="address-empty" v-if="addressStore.addressList.length === 0">
         <i class="iconfont icon-dizhi"></i>
         <span class="pt10">快递小哥找不到你，留个地址呗</span>
       </div>
-      <div class="flex-justify-center mt30 address-btn">
-        <van-button style="width: 124px" @click="toEditAddressPage">
+      <div class="address-btn mt30">
+        <van-button style="width: 124px" @click="toEditAddressPage()">
           添加地址
         </van-button>
       </div>
@@ -44,50 +56,52 @@
 <script>
 import AllHeader from '@/components/AllHeader'
 import TabBar from '@/components/TabBar'
+import useAddressStore from '@/store/address'
+import { getAddressList } from '@/axios/api/addressApi'
+import { INITADDRESSLIST } from '@/store/actions-type'
 export default {
   name: 'AddressShow',
   data() {
-    return {}
+    return {
+      addressStore: useAddressStore()
+    }
   },
   components: { AllHeader, TabBar },
   methods: {
-    toEditAddressPage() {
-      this.$router.push('/address-manage/add-address')
+    toEditAddressPage(addressItem) {
+      this.$router.push({
+        path: '/address-manage/add-address',
+        query: {
+          addressInfo: addressItem
+            ? JSON.stringify(addressItem)
+            : JSON.stringify({})
+        }
+      })
+    },
+    async initAddressList() {
+      try {
+        const { data } = await getAddressList('/api/address/address-list')
+        console.log(data)
+        this.addressStore[INITADDRESSLIST](data)
+      } catch (e) {
+        console.log(e.message)
+      }
     }
+  },
+  mounted() {
+    this.initAddressList()
   }
 }
 </script>
 <style lang="scss" scoped>
 .address-manage {
-  min-height: 100vh;
+  height: 100vh;
   background-color: #f5f5f5;
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #b0352f;
-    color: #fff;
-    height: 44px;
-    .back-icon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 44px;
-    }
-    .address-text {
-      display: flex;
-      flex: 1;
-      justify-content: center;
-    }
-    .space {
-      width: 44px;
-    }
-  }
   .address-list {
     ul {
       li {
         display: flex;
-        height: 78px;
+        min-height: 78px;
         padding: 10px 12px;
         background-color: #fff;
         box-sizing: border-box;
@@ -118,6 +132,7 @@ export default {
       }
     }
     .address-btn {
+      text-align: center;
       ::v-deep .van-button {
         background-color: #b0352f;
         color: #fff;
