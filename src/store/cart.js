@@ -3,7 +3,7 @@ import {
   INITCARTLIST,
   CHECKEDALLSTATE,
   ALLCHECKEDCHANGE,
-  DELETEBATCH,
+  CHECKEDADDRESS,
   DELETESINGLEGOODS
 } from '@/store/actions-type'
 
@@ -34,7 +34,7 @@ const cartStore = defineStore('cart', {
         cartItem.checked = this.allChecked
       })
     },
-    [DELETEBATCH]() {
+    [CHECKEDADDRESS]() {
       // 获取被删除商品的id
       const beDeleteArr = this.cartList
         .filter((cartItem) => {

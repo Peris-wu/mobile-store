@@ -12,3 +12,6 @@ export const _addGood = (url, params = {}) => {
 export const _deleteGoods = (url, params = {}) => {
   return ajax.post(url, params).then((res) => res.data)
 }
+export const _showGoodsById = (url, params = {}) => {
+  return ajax.post(url, params).then((res) => res.data)
+}

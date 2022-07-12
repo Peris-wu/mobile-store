@@ -61,16 +61,16 @@
     <!-- 去结算 s -->
     <div class="pay-bill">
       <van-checkbox v-model="cartStore.allChecked"></van-checkbox>
-      <div class="caculate f12 pt5 pl10">
-        <div v-if="isEdit">
+      <div class="centerInfo f12 pt5 pl10">
+        <div v-if="isEdit" class="calculate">
           <span>
             共有
-            <span class="pl5 pr5 color-red">{{ goods_sum }}</span>
+            <span class="f14 pl5 pr5 color-red">{{ goods_sum }}</span>
             件商品
           </span>
           <span class="pt5">
             总计：
-            <span class="color-red">￥{{ goods_price_sum }}</span>
+            <span class="f14 color-red">￥{{ goods_price_sum }}</span>
           </span>
         </div>
       </div>
@@ -82,6 +82,7 @@
             (cartStore.cartList && cartStore.cartList.length === 0) ||
             isCheckedGood === -1
           "
+          @click="toPayment"
         >
           去结算
         </van-button>
@@ -103,7 +104,7 @@ import {
   INITCARTLIST,
   CHECKEDALLSTATE,
   ALLCHECKEDCHANGE,
-  DELETEBATCH,
+  CHECKEDADDRESS,
   DELETESINGLEGOODS
 } from '@/store/actions-type'
 export default {
@@ -143,6 +144,15 @@ export default {
   },
   components: { CartHeader },
   methods: {
+    toPayment() {
+      const beCheckedArr = this.cartStore[CHECKEDADDRESS]()
+      this.$router.push({
+        path: '/payment',
+        query: {
+          beCheckedArr: JSON.stringify(beCheckedArr)
+        }
+      })
+    },
     async deleteSingleGood(cartItem, index) {
       try {
         this.cartStore[DELETESINGLEGOODS](index)
@@ -156,9 +166,9 @@ export default {
     },
     async deleteGoods() {
       try {
-        const beDeleteArr = this.cartStore[DELETEBATCH]()
+        const beCheckedArr = this.cartStore[CHECKEDADDRESS]()
         const result = await _deleteGoods('/api/cart/delete-goods', {
-          deleteTarget: beDeleteArr
+          deleteTarget: beCheckedArr
         })
         console.log(result)
       } catch (e) {
@@ -195,6 +205,7 @@ export default {
           this.$set(cartItem, 'checked', true)
         })
         this.cartStore[INITCARTLIST](data)
+        this.changeChecked()
       } catch (err) {
         console.log(err)
       }
@@ -280,11 +291,14 @@ export default {
   width: 100%;
   padding-left: 13px;
   background-color: #fff;
-  .caculate {
-    display: flex;
-    flex-direction: column;
+  .centerInfo {
     flex: 1;
+    .calculate {
+      display: flex;
+      flex-direction: column;
+    }
   }
+
   .pay-btn {
     width: 120px;
     ::v-deep .van-button {
