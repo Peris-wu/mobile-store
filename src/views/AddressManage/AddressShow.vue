@@ -14,7 +14,11 @@
         <li
           v-for="addressItem in addressStore.addressList"
           :key="addressItem.id"
-          @click="toEditAddressPage(addressItem)"
+          @click="
+            isSetDefaultAddress
+              ? setDefaultAddress(addressItem)
+              : toEditAddressPage(addressItem)
+          "
         >
           <div class="address-info">
             <div class="pt5">
@@ -57,13 +61,14 @@
 import AllHeader from '@/components/AllHeader'
 import TabBar from '@/components/TabBar'
 import useAddressStore from '@/store/address'
-import { getAddressList } from '@/axios/api/addressApi'
+import { getAddressList, _setDefaultAddress } from '@/axios/api/addressApi'
 import { INITADDRESSLIST } from '@/store/actions-type'
 export default {
   name: 'AddressShow',
   data() {
     return {
-      addressStore: useAddressStore()
+      addressStore: useAddressStore(),
+      isSetDefaultAddress: false
     }
   },
   components: { AllHeader, TabBar },
@@ -85,10 +90,23 @@ export default {
       } catch (e) {
         console.log(e.message)
       }
+    },
+    async setDefaultAddress(addressItem) {
+      const result = await _setDefaultAddress(
+        '/api/address/set-default-address',
+        {
+          id: addressItem.id
+        }
+      )
+      console.log(result)
+      this.$router.back()
     }
   },
   mounted() {
     this.initAddressList()
+    if (this.$route.query.setDefault) {
+      this.isSetDefaultAddress = this.$route.query.setDefault
+    }
   }
 }
 </script>

@@ -12,7 +12,7 @@
         <i class="iconfont icon-home1 color-fff f24"></i>
       </template>
     </all-header>
-    <div class="receive-goods-info">
+    <div class="receive-goods-info" @click="toAddressShow">
       <div class="pt8 pb8 pl15 pr15 f14">收货信息:</div>
       <div class="address-info">
         <div class="f12">
@@ -20,7 +20,9 @@
             <span>{{ addressInfo.user_name }}</span>
             <span class="pl5">{{ addressInfo.user_tel }}</span>
           </div>
-          <div class="address-detail">{{ addressInfo.user_address }}</div>
+          <div class="address-detail">
+            {{ addressInfo.user_address }}
+          </div>
         </div>
         <div>
           <i class="iconfont icon-youjiantou color-s9 f20"></i>
@@ -135,6 +137,14 @@ export default {
     }
   },
   methods: {
+    toAddressShow() {
+      this.$router.push({
+        path: '/address-manage/show',
+        query: {
+          setDefault: true
+        }
+      })
+    },
     selectPayWay(index) {
       this.paymentWay = index
     },
@@ -205,6 +215,7 @@ export default {
           height: 74px;
           img {
             width: 100%;
+            height: 100%;
           }
         }
         .right {
