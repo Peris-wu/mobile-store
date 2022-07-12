@@ -106,6 +106,11 @@ const routes = [
     component: () => import('@/views/Detail')
   },
   {
+    path: '/payment',
+    name: 'Payment',
+    component: () => import('@/views/Payment')
+  },
+  {
     path: '/login',
     component: () => import('@/views/Login'),
     children: [

@@ -15,3 +15,6 @@ export const updateAddress = (url, params = {}) => {
 export const deleteAddress = (url, params = {}) => {
   return ajax.post(url, params).then((res) => res.data)
 }
+export const defaultAddress = (url, params = {}) => {
+  return ajax.get(url, { params }).then((res) => res.data)
+}
