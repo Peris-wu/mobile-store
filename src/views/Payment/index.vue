@@ -164,6 +164,7 @@ export default {
     }
   },
   mounted() {
+    console.log(localStorage.getItem('ORDERID'))
     this.initDefaultAddress()
     this.initPaymentGoodsList(this.$route.query.beCheckedArr)
   }
