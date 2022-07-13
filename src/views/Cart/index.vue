@@ -98,14 +98,18 @@
 <script>
 import CartHeader from '@/components/CategoryHeader'
 import useCartStore from '@/store/cart'
+import useOrderStore from '@/store/order'
 import { getCartList, _addGood, _deleteGoods } from '@/axios/api/cartApi'
+import { createOrder } from '@/axios/api/orderApi'
 import _ from 'lodash'
 import {
   INITCARTLIST,
   CHECKEDALLSTATE,
   ALLCHECKEDCHANGE,
   CHECKEDADDRESS,
-  DELETESINGLEGOODS
+  DELETESINGLEGOODS,
+  BECHECKEDGOODS,
+  ORDER_ID
 } from '@/store/actions-type'
 export default {
   name: 'CartView',
@@ -113,6 +117,7 @@ export default {
     return {
       checked: true,
       cartStore: useCartStore(),
+      orderStore: useOrderStore(),
       handleDebounce: '',
       isEdit: true
     }
@@ -144,22 +149,35 @@ export default {
   },
   components: { CartHeader },
   methods: {
-    toPayment() {
-      const beCheckedArr = this.cartStore[CHECKEDADDRESS]()
-      this.$router.push({
-        path: '/payment',
-        query: {
-          beCheckedArr: JSON.stringify(beCheckedArr)
-        }
-      })
+    async toPayment() {
+      try {
+        // 被选中的商品信息列表
+        const beCheckedGoodsList = this.cartStore[BECHECKEDGOODS]()
+        //被选中的商品id
+        const beCheckedArr = beCheckedGoodsList.map((item) => {
+          return item.id
+        })
+        console.log(beCheckedGoodsList)
+        const { orderId } = await createOrder('/api/order/add-order', {
+          selectGoodsList: beCheckedGoodsList
+        })
+        this.orderStore[ORDER_ID](orderId)
+        this.$router.push({
+          path: '/payment',
+          query: {
+            beCheckedArr: JSON.stringify(beCheckedArr)
+          }
+        })
+      } catch (e) {
+        console.log(e.message)
+      }
     },
     async deleteSingleGood(cartItem, index) {
       try {
         this.cartStore[DELETESINGLEGOODS](index)
-        const result = await _deleteGoods('/api/cart/delete-goods', {
+        await _deleteGoods('/api/cart/delete-goods', {
           deleteTarget: [cartItem.id]
         })
-        console.log(result)
       } catch (e) {
         console.log(e.message)
       }
@@ -167,10 +185,9 @@ export default {
     async deleteGoods() {
       try {
         const beCheckedArr = this.cartStore[CHECKEDADDRESS]()
-        const result = await _deleteGoods('/api/cart/delete-goods', {
+        await _deleteGoods('/api/cart/delete-goods', {
           deleteTarget: beCheckedArr
         })
-        console.log(result)
       } catch (e) {
         console.log(e.message)
       }
@@ -183,11 +200,10 @@ export default {
     },
     async addGood(goods_sum, goods_id) {
       try {
-        const result = await _addGood('/api/cart/add-goods', {
+        await _addGood('/api/cart/add-goods', {
           goods_sum,
           goods_id
         })
-        console.log(result)
       } catch (e) {
         console.log(e.message)
       }

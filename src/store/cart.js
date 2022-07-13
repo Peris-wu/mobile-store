@@ -4,7 +4,8 @@ import {
   CHECKEDALLSTATE,
   ALLCHECKEDCHANGE,
   CHECKEDADDRESS,
-  DELETESINGLEGOODS
+  DELETESINGLEGOODS,
+  BECHECKEDGOODS
 } from '@/store/actions-type'
 
 const cartStore = defineStore('cart', {
@@ -20,7 +21,7 @@ const cartStore = defineStore('cart', {
       this.cartList = payLoad
     },
     [CHECKEDALLSTATE]() {
-      this.cartList.find((cartItem) => {
+      this.cartList?.find((cartItem) => {
         if (!cartItem.checked) {
           this.allChecked = false
           return true
@@ -51,6 +52,11 @@ const cartStore = defineStore('cart', {
     },
     [DELETESINGLEGOODS](deleteIndex) {
       this.cartList.splice(deleteIndex, 1)
+    },
+    [BECHECKEDGOODS]() {
+      return this.cartList.filter((cartItem) => {
+        return cartItem.checked
+      })
     }
   }
 })
