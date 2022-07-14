@@ -150,6 +150,11 @@ const routes = [
     ]
   },
   {
+    path: '/payed',
+    name: 'Payed',
+    component: () => import('@/views/Payed')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: () => import('@/views/NotFound')

@@ -239,10 +239,10 @@ export default {
       const res = await addGoods('/api/cart/add-goods', params)
       console.log(res)
       if (res.code === 0) {
-        Notify({
-          type: 'success',
-          message: '添加成功'
-        })
+        // Notify({
+        //   type: 'success',
+        //   message: '添加成功'
+        // })
       }
     }, 300)
 
