@@ -86,7 +86,7 @@
         件，总金额：
         <span class="f18 color-red">￥{{ result_price }}</span>
       </div>
-      <div class="sub-btn">提交订单</div>
+      <div class="sub-btn" @click="_subOrder">提交订单</div>
     </div>
     <!-- 底部提交订单 e -->
   </div>
@@ -96,6 +96,8 @@
 import AllHeader from '@/components/AllHeader'
 import { defaultAddress } from '@/axios/api/addressApi'
 import { _showGoodsById } from '@/axios/api/cartApi'
+import { subOrder, payment, getOrder } from '@/axios/api/orderApi'
+import useOrderStore from '@/store/order'
 export default {
   name: 'PaymentView',
   data() {
@@ -116,7 +118,9 @@ export default {
     return {
       paymentWay: 0,
       addressInfo: {},
-      checkedGoods: []
+      checkedGoods: [],
+      beCheckedArr: [],
+      orderStore: useOrderStore()
     }
   },
   components: { AllHeader },
@@ -156,17 +160,38 @@ export default {
         console.log(e.message)
       }
     },
-    async initPaymentGoodsList(selectGoodsArr) {
+    async initPaymentGoodsList() {
       const { data } = await _showGoodsById('/api/cart/show-data-by-id', {
-        selectTarget: JSON.parse(selectGoodsArr)
+        selectTarget: JSON.parse(this.beCheckedArr)
       })
       this.checkedGoods = data
+    },
+    async _subOrder() {
+      const result = await subOrder('/api/order/sub-order', {
+        order_id: this.orderStore.orderId,
+        deleteGoodsArr: this.beCheckedArr
+      })
+      if (result.success) {
+        const { data } = await getOrder('/api/order/get-order', {
+          order_id: this.orderStore.orderId
+        })
+        const params = {
+          order_id: this.orderStore.orderId,
+          goods_name: data.goods_name,
+          price: this.result_price,
+          sum: this.result_sum
+        }
+        const paymentInfo = await payment('/api/order/payment', params)
+        window.location.href = paymentInfo.paymentUrl
+        console.log(paymentInfo)
+      }
+      console.log(result)
     }
   },
   mounted() {
-    console.log(localStorage.getItem('ORDERID'))
     this.initDefaultAddress()
-    this.initPaymentGoodsList(this.$route.query.beCheckedArr)
+    this.beCheckedArr = this.$route.query.beCheckedArr
+    this.initPaymentGoodsList()
   }
 }
 </script>

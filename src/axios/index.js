@@ -12,6 +12,7 @@ const userStore = loginStore()
 const loadingStore = useLoadingStore()
 ajax.interceptors.request.use(
   function (config) {
+    console.log(config)
     loadingStore[CHANGELOADINGSTATE](true)
     if (userStore.token) {
       config.headers.token = userStore.token
